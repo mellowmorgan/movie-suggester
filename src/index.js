@@ -36,10 +36,24 @@ $("#selected-cast-members").on("click", "button", function() {
 
 $("#add-keyword").on("click", () => {
   let keyword = $("#input-keyword");
+  
   if (keyword.val() !== "") {
-    $("#selected-keywords").append(`
-      <button class="btn btn-success tag-btn" type="button" value="${keyword.val()}">${keyword.val()} <span class="tag-btn-x">X</span></button>
-    `);
+    if ($("#add-keyword").css("--first-click") === "true") {
+      //API CALL
+      let json = $.getJSON("./test.json", function(json) {
+        console.log(json);
+      });
+      makeKeywordSuggestions(json);
+      $("#add-keyword").css("--first-click", "false");
+    } else {
+      $("#keyword-suggestions :checked").each(function(element) {
+        $("#selected-keywords").append(`
+        <button class="btn btn-success tag-btn" type="button" value="${element.val()}">${element.parent().text} <span class="tag-btn-x">X</span></button>
+        `);
+      });
+      $("#add-keyword").css("--first-click", "true");
+    }
+    
     keyword.val("");
   }
 });
@@ -47,6 +61,24 @@ $("#add-keyword").on("click", () => {
 $("#selected-keywords").on("click", "button", function() {
   $(this).remove();
 });
+
+function makeKeywordSuggestions(json) {
+  let suggestions = $("#keyword-suggestions");
+  for (let i = 0; i < json.results.length; i++) {
+    suggestions.append(`
+    <label class="list-group-item">
+      <input class="form-check-input me-1" type="checkbox" value="${json.results[i].id}">
+      ${json.results[i].name}
+    </label>
+    `);
+  }
+}
+
+
+/* <label class="list-group-item">
+<input class="form-check-input me-1" type="checkbox" value="">
+First checkbox
+</label> */
 
 function getMovies(response) {
   if (response.results) {
