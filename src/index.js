@@ -8,7 +8,7 @@ $("#add-genre").on("click", () => {
   let option = $("#genre :selected");
   if (option.val() !== "" && option.prop("disabled") === false) {
     $("#selected-genres").append(`
-      <button class="btn btn-success tag-btn" type="button" value="${option.val()}"">${option.text()} <span class="tag-btn-x">X</span></button>
+      <button class="btn btn-success tag-btn" type="button" value="${option.val()}">${option.text()} <span class="tag-btn-x">X</span></button>
     `);
     option.prop("disabled", true);
   }
@@ -24,7 +24,7 @@ $("#add-cast-member").on("click", () => {
   let cast = $("#input-cast-member");
   if (cast.val() !== "") {
     $("#selected-cast-members").append(`
-      <button class="btn btn-success tag-btn" type="button" value="//this will be id from API call//"">${cast.val()} <span class="tag-btn-x">X</span></button>
+      <button class="btn btn-success tag-btn" type="button" value="//this will be id from API call//">${cast.val()} <span class="tag-btn-x">X</span></button>
     `);
     cast.val("");
   }
@@ -50,8 +50,8 @@ $("#selected-keywords").on("click", "button", function() {
 
 function getMovies(response) {
   if (response.results) {
-    if (response.results.length>0) {  
-      for(let i = 0; i < 5; i++) {
+    if (response.results.length > 0) {  
+      for(let i = 0; i < response.results.length; i++) {
         console.log(response.results[i].title);
       }
     } else {
@@ -64,19 +64,20 @@ function getMovies(response) {
 
 // https://image.tmdb.org/t/p/original (movie poster link)
 
-//let genres = [];
-// genres = $("input[name='genres']:checked").map(function() {
-//   return $(this).val();
-// }).toArray();
 
-let genres = [];
-$("#selected-genres").each(function() {
-  genres.push($(this).val());
-});
-
-//let genres= ['16','80','27'];
-let genresString = genres.join(',');
-GenreFinder.makeGenreCall(genresString)
-  .then(function(response) {
-    getMovies(response);
+$("#movie-form").submit(function(event){
+  event.preventDefault();
+  let genres = [];
+  $("#selected-genres").children().each(function() {
+    console.log($(this).val());
+    genres.push($(this).val());
   });
+
+  //let genres= ['16','80','27'];
+  let genresString = genres.join(',');
+  console.log(genresString);
+  GenreFinder.makeGenreCall(genresString)
+    .then(function(response) {
+      getMovies(response);
+    });
+});
