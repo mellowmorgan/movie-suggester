@@ -6,7 +6,7 @@ import './css/styles.css';
 
 function getMovies(response) {
   if (response.results) {
-    if (response.results.length>0){  
+    if (response.results.length>0) {  
       for(let i = 0; i < 5; i++) {
         console.log(response.results[i].title);
       }
@@ -24,7 +24,13 @@ function getMovies(response) {
 // genres = $("input[name='genres']:checked").map(function() {
 //   return $(this).val();
 // }).toArray();
-let genres= ['16','80','27'];
+
+let genres = [];
+$("#selected-genres").each(function() {
+  genres.push($(this).val());
+});
+
+//let genres= ['16','80','27'];
 let genresString = genres.join(',');
 GenreFinder.makeGenreCall(genresString)
   .then(function(response) {
