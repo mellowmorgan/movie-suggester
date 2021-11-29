@@ -4,7 +4,7 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
 
-function getElements(response) {
+function getMovies(response) {
   if (response.results) {
     if (response.results.length>0){  
       for(let i = 0; i < 5; i++) {
@@ -28,5 +28,5 @@ let genres= ['16','80','27'];
 let genresString = genres.join(',');
 GenreFinder.makeGenreCall(genresString)
   .then(function(response) {
-    getElements(response);
+    getMovies(response);
   });
