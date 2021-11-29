@@ -1,13 +1,64 @@
 <!DOCTYPE html>
-<html>
-<head></head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Suggester</title>
+</head>
 <body>
-  <form>
-    <div class="form-group">
-      <label>Enter a haiku: </label>
-      <textarea class="form-control"></textarea>
-      <button class="btn btn-dark">Check</button>
-    </div>
-  </form>
+  <div class="container">
+    <h1>Movie Suggester</h1>
+    <nav>
+
+    </nav>
+    <h2>Search for Movies</h2>
+    <form>
+      <div id="select">
+        <select class="custom-select" id="genre">
+          <option selected>Select a genre</option>
+          <option value="28">Action</option>
+          <option value="12">Adventure</option>
+          <option value="16">Animation</option>
+          <option value="35">Comedy</option>
+          <option value="80">Crime</option>
+          <option value="99">Documentary</option>
+          <option value="18">Drama</option>
+          <option value="10751">Family</option>
+          <option value="14">Fantasy</option>
+          <option value="36">History</option>
+          <option value="27">Horror</option>
+          <option value="10402">Music</option>
+          <option value="9648">Mystery</option>
+          <option value="10749">Romance</option>
+          <option value="878">Science Fiction</option>
+          <option value="10770">TV Movie</option>
+          <option value="53">Thriller</option>
+          <option value="10752">War</option>
+          <option value="37">Western</option>
+        </select>
+        <div class="button" id="genre-btn">
+          <button id="add-genre" class="btn btn-success">Add genre</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cast-member" class="col-form-label">Cast Member</label>
+        <input type="text" class="form-control" id="input-cast-member">
+        <div class="button" id="cast-member-btn">
+          <button id="add-cast-member" class="btn btn-success">Add cast member</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="keyword" class="col-form-label">Keyword</label>
+        <input type="text" class="form-control" id="input-keyword" placeholder="ex: title, topic, etc">
+        <div class="button" id="keyword-btn">
+          <button id="add-keyword" class="btn btn-success">Add keyword</button>
+        </div>
+      </div>
+      <div class="button" id="submit-btn">
+        <button id="submit" class="btn btn-success" type="submit">Search</button>
+      </div>
+    </form>
+  </div>
 </body>
 </html>
