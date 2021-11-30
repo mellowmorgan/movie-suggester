@@ -30,8 +30,26 @@ $("#selected-genres").on("click", "button", function() {
 $("#add-cast-member").on("click", () => {
   let cast = $("#input-cast-member");
   if (cast.val() !== "") {
-    makeButton($("#selected-cast-members"), cast.val(), cast.text());
-    cast.val("");
+    MovieFinder.getCastID(cast.val())
+    .then(function(response) {
+      if (response instanceof Error) {
+        throw response;
+      } else if (response.results.length === 0) {
+        throw Error("no results");
+      } else {
+        makeButton($("#selected-cast-members"), response.results[0].id, response.results[0].name);
+        cast.val("");
+      }
+    })
+    .catch(function(response) {
+      if (response.message === "no results") {
+        console.log("Error: no results");
+        $("#input-keyword").val("");
+      } else {
+        console.log(`Error: ${response.message}`);
+        $("#input-keyword").val("");
+      }
+    });
   }
 });
 
@@ -117,11 +135,11 @@ function getMovies(response) {
       console.log("No results found.");
     }
   } else {
-    console.log(`Error: ${response.status_message}`);
+    console.log(`Error: ${response.message}`);
   }
 }
 
-function getFinalSelections(type){
+function getFinalSelections(type) {
   let array = [];
   $(`#selected-${type}`).children().each(function() {
     array.push($(this).val());
@@ -133,14 +151,36 @@ function getFinalSelections(type){
 
 // https://image.tmdb.org/t/p/original (movie poster link)
 
+// function getID(response) {
+//   if (response.results) {
+//     if (response.results.length > 0) {  
+//       return response.results[0].id;  
+//     } else {
+//       console.log("No results found.");
+//     }
+//   } else {
+//     console.log(`Error: ${response.message}`);
+//   }
+
+// }
+//get cast from buttons adding in array
+// function getIDsList(arrayStringCast){
+  
+//   let listIDs = arrayStringCast.map(function(castPerson) {
+//     MovieFinder.getCastID(castPerson).then(function(response) {
+//       return getID(response);
+//       });
+//   });
+//   return listIDs;
+// }
+
 $("#movie-form").submit(function(event){
   event.preventDefault();
   let genresString = getFinalSelections("genres")
   let keywordsString = getFinalSelections("keywords");
-  MovieFinder.makeMovieCall(genresString,keywordsString)
+  let castString = getFinalSelections("cast-members");
+  MovieFinder.makeMovieCall(genresString,keywordsString, castString)
     .then(function(response) {
       getMovies(response);
     });
 });
-
-//Utiliy function for keywords to add +
