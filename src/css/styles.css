@@ -1,11 +1,37 @@
+body {
+  background-color: rgb(70, 3, 70);
+  color: gold
+}
+
 #keyword-suggestions {
   width: 500px;
   height: 20vh;
   overflow: auto;
   display: none;
 }
-
 .tag-btn-x {
   color: pink;
   font-weight: bold;
+}
+
+ .col {
+  background-color:rgb(70, 3, 70);
+} 
+
+.card {
+  display: inline-block;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.card-body {
+  width: 100%;
+  background-color:white;
+  min-height: 100%;
+}
+
+.carousel-item {
+  width: 80%;
+  position: relative;
+  left: 10%;
 }

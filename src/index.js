@@ -148,22 +148,21 @@ function getMovies(response) {
 }
 
 function displayResults(response) {
+  let carouselString = "";
   let movieInner = $("#movieInner");
+  carouselString +=`<div class="carousel-item active"><div class="row justify-content-center">`;
   for (let i = 0; i < response.results.length; i++) {
-    if (i % 5 === 0) {
-      if (i !== 0) {
-        movieInner.append(`</div><div class="carousel-item">`);
-      } else {
-        movieInner.append(`<div class="carousel-item active">`);
-      }
+    if (i % 5 === 0 && i !== 0) {
+      carouselString +=`</div></div><div class="carousel-item"><div class="row justify-content-center">`;
     }
-    movieInner.append(`
-    <div class="card" id=${response.results[i].id}>
+    carouselString +=`
+    <div class="card col-2" id=${response.results[i].id}>
       <div class="card-body">Movie title: ${response.results[i].title}</div>
     </div>
-    `);
+    `;
   }
-  movieInner.append(`</div>`);
+  carouselString +=`</div></div>`;
+  movieInner.html(carouselString);
 }
 
 function getFinalSelections(type) {
