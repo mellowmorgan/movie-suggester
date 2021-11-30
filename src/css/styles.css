@@ -1,7 +1,3 @@
-#add-keyword {
-  --first-click: true;
-}
-
 #keyword-suggestions {
   width: 500px;
   height: 20vh;

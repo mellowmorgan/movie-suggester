@@ -5,6 +5,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
 
 
+sessionStorage.setItem('keywordFirstClick', "true");
+
 function makeButton(div, value, text) {
   div.append(`
       <button class="btn btn-success tag-btn" type="button" value="${value}">${text} <span class="tag-btn-x">X</span></button>
@@ -38,28 +40,29 @@ $("#selected-cast-members").on("click", "button", function() {
 });
 
 $("#add-keyword").on("click", () => {
-  let keyword = $("#input-keyword");
-  
-  if (keyword.val() !== "") {
-    if ($("#add-keyword").css("--first-click") === "true") {
+  let keyword = $("#input-keyword").val();
+  if (keyword !== "") {
+    if (sessionStorage.getItem('keywordFirstClick') === 'true') {
       MovieFinder.keywordFinder(keyword)
       .then(function(response) {
-        let json = getKeyword(response);
+        let matched = hasExactMatch(response.results, keyword);
+        if (!matched) {
+          makeKeywordSuggestions(response);
+          $("#keyword-suggestions").slideToggle();
+          sessionStorage.setItem('keywordFirstClick', "false");
+        } 
+      })
+      .catch(function(response) {
+        console.log(`Error: ${response.status_message}`);
       });
-      let matched = hasExactMatch(json);
-      if (!matched) {
-      makeKeywordSuggestions(json);
-      $("#keyword-suggestions").slideToggle();
-      $("#add-keyword").css("--first-click", "false");
-      }
     } else {
       $("#keyword-suggestions :checked").each(function() {
-        makeButton($("#selected-keywords"), "...", "..."); //need to put in proper args
+        makeButton($("#selected-keywords"), $(this).val(), $(this).parent().text());
       });
-      $("#add-keyword").css("--first-click", "true");
+      sessionStorage.setItem('keywordFirstClick', "true");
       $("#keyword-suggestions").html("");
       $("#keyword-suggestions").toggle();
-      keyword.val("");
+      $("#input-keyword").val("");
     }
   }
 });
@@ -78,16 +81,18 @@ function hasExactMatch(results, keyword) {
   return false;
 }
 
-function getKeyword(response) {
-  if (response.results) {
-      return response;
-    } else {
-      console.log("No results found.");
-    }
-  } else {
-    console.log(`Error: ${response.status_message}`);
-  }
-}
+// function getKeyword(response) {
+//   if (response.results) {
+//     if (response.results.length > 0) {  
+//       return response;
+//       }
+//     } else {
+//       console.log("No results found.");
+//     }
+//   } else {
+//     console.log(`Error: ${response.status_message}`);
+//   }
+// }
 
 function makeKeywordSuggestions(json) {
   let suggestions = $("#keyword-suggestions");
@@ -137,9 +142,3 @@ $("#movie-form").submit(function(event){
 });
 
 //Utiliy function for keywords to add +
-
-function transformInput(input){
-  let newInput = input.trim();
-  newInput = newInput.split(" ").join("+");
-  return newInput;
-}
