@@ -8,9 +8,17 @@ import './css/styles.css';
 sessionStorage.setItem('keywordFirstClick', "true");
 
 function makeButton(div, value, text) {
-  div.append(`
-      <button class="btn btn-success tag-btn" type="button" value="${value}">${text} <span class="tag-btn-x">X</span></button>
-    `);
+  let match = false;
+  div.children().each(function() {
+    if (this.value === value.toString()) {
+      match = true;
+    }
+  });
+  if (!match) {
+    div.append(`
+        <button class="btn btn-success tag-btn" type="button" value="${value}">${text} <span class="tag-btn-x">X</span></button>
+      `);
+  }
 }
 
 $("#add-genre").on("click", () => {
@@ -58,7 +66,7 @@ $("#selected-cast-members").on("click", "button", function() {
 });
 
 $("#add-keyword").on("click", () => {
-  let keyword = $("#input-keyword").val();
+  let keyword = $("#input-keyword").val().toLowerCase();
   if (keyword !== "") {
     if (sessionStorage.getItem('keywordFirstClick') === 'true') {
       MovieFinder.keywordFinder(keyword)
