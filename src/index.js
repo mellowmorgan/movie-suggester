@@ -45,6 +45,13 @@ $("#add-keyword").on("click", () => {
     if (sessionStorage.getItem('keywordFirstClick') === 'true') {
       MovieFinder.keywordFinder(keyword)
       .then(function(response) {
+        if (response instanceof Error) {
+          throw response;
+        }
+        if (response.results.length === 0) {
+          throw Error("no results");
+        }
+        
         let matched = hasExactMatch(response.results, keyword);
         if (!matched) {
           makeKeywordSuggestions(response);
@@ -53,7 +60,13 @@ $("#add-keyword").on("click", () => {
         } 
       })
       .catch(function(response) {
-        console.log(`Error: ${response.status_message}`);
+        if (response.message === "no results") {
+          console.log("Error: no results");
+          $("#input-keyword").val("");
+        } else {
+          console.log(`Error: ${response.message}`);
+          $("#input-keyword").val("");
+        }
       });
     } else {
       $("#keyword-suggestions :checked").each(function() {
@@ -75,24 +88,12 @@ function hasExactMatch(results, keyword) {
   for(let i = 0; i < results.length; i++){
     if(results[i].name === keyword){
       makeButton($("#selected-keywords"), results[i].id, results[i].name);
+      $("#input-keyword").val("");
       return true;
     }
   }
   return false;
 }
-
-// function getKeyword(response) {
-//   if (response.results) {
-//     if (response.results.length > 0) {  
-//       return response;
-//       }
-//     } else {
-//       console.log("No results found.");
-//     }
-//   } else {
-//     console.log(`Error: ${response.status_message}`);
-//   }
-// }
 
 function makeKeywordSuggestions(json) {
   let suggestions = $("#keyword-suggestions");
@@ -120,21 +121,22 @@ function getMovies(response) {
   }
 }
 
+function getFinalSelections(type){
+  let array = [];
+  $(`#selected-${type}`).children().each(function() {
+    array.push($(this).val());
+  });
+
+  let finalString = array.join(',');
+  return finalString;
+}
+
 // https://image.tmdb.org/t/p/original (movie poster link)
 
 $("#movie-form").submit(function(event){
   event.preventDefault();
-  let genres = [];
-  $("#selected-genres").children().each(function() {
-    console.log($(this).val());
-    genres.push($(this).val());
-  });
-
-  //let genres= ['16','80','27'];
-  let genresString = genres.join(',');
-  console.log(genresString);
-  
-  let keywordsString = "4565"; 
+  let genresString = getFinalSelections("genres")
+  let keywordsString = getFinalSelections("keywords");
   MovieFinder.makeMovieCall(genresString,keywordsString)
     .then(function(response) {
       getMovies(response);
