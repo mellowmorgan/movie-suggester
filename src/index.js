@@ -83,6 +83,7 @@ $("#add-keyword").on("click", () => {
           makeKeywordSuggestions(response);
           $("#keyword-suggestions").slideToggle();
           sessionStorage.setItem('keywordFirstClick', "false");
+          $("#input-keyword").prop("disabled", true);
         } 
       })
       .catch(function(response) {
@@ -102,6 +103,7 @@ $("#add-keyword").on("click", () => {
       $("#keyword-suggestions").html("");
       $("#keyword-suggestions").toggle();
       $("#input-keyword").val("");
+      $("#input-keyword").prop("disabled", false);
     }
   }
 });
@@ -136,9 +138,7 @@ function makeKeywordSuggestions(json) {
 function getMovies(response) {
   if (response.results) {
     if (response.results.length > 0) {  
-      for(let i = 0; i < response.results.length; i++) {
-        console.log(response.results[i].title);
-      }
+      displayResults(response);
     } else {
       console.log("No results found.");
     }
@@ -147,12 +147,30 @@ function getMovies(response) {
   }
 }
 
+function displayResults(response) {
+  let movieInner = $("#movieInner");
+  for (let i = 0; i < response.results.length; i++) {
+    if (i % 5 === 0) {
+      if (i !== 0) {
+        movieInner.append(`</div><div class="carousel-item">`);
+      } else {
+        movieInner.append(`<div class="carousel-item active">`);
+      }
+    }
+    movieInner.append(`
+    <div class="card" id=${response.results[i].id}>
+      <div class="card-body">Movie title: ${response.results[i].title}</div>
+    </div>
+    `);
+  }
+  movieInner.append(`</div>`);
+}
+
 function getFinalSelections(type) {
   let array = [];
   $(`#selected-${type}`).children().each(function() {
     array.push($(this).val());
   });
-
   let finalString = array.join(',');
   return finalString;
 }
@@ -192,3 +210,4 @@ $("#movie-form").submit(function(event){
       getMovies(response);
     });
 });
+
