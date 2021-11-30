@@ -112,11 +112,16 @@ function getKeyword(response, keyword) {
     let hasMatch = hasExactMatch(response.results,keyword);
     //if exact hit
     if (hasMatch[0]){
-      arrayKeywordsInfo.push([hasMatch[1],hasMatch[2]]);
+      arrayKeywordsInfo.push([hasMatch[0],hasMatch[1]]);
     }
     else if (response.results.length > 0 && !hasMatch) {  
+      $("#addKeywordsButton").show();
       for(let i = 0; i < response.results.length; i++) {
-        console.log(response.results[i].title);
+      $("#keywordList").append(`
+        <li class="list-group-item">
+        <input type="checkbox" value="${response.results[i].id}" id="${response.results[i].name}" aria-label="...">
+        ${response.results[i].name}
+      </li>`);
       }
     } else {
       console.log("No results found.");
@@ -130,3 +135,29 @@ MovieFinder.keywordFinder(keywordsString)
     .then(function(response) {
       getKeyword(response);
     });
+
+
+
+
+  <ul class="list-group">
+  <li class="list-group-item">
+    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+    First checkbox
+  </li>
+  <li class="list-group-item">
+    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+    Second checkbox
+  </li>
+  <li class="list-group-item">
+    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+    Third checkbox
+  </li>
+  <li class="list-group-item">
+    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+    Fourth checkbox
+  </li>
+  <li class="list-group-item">
+    <input class="form-check-input me-1" type="checkbox" value="" aria-label="...">
+    Fifth checkbox
+  </li>
+</ul>
