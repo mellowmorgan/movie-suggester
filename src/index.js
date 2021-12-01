@@ -192,8 +192,9 @@ function getMovies(response, selectedTitle) {
   if (response.results) {
     if (response.results.length > 0) { 
       //mw start 
-      let results = modifyResults(response.results,selectedTitle);
-      console.log(results);
+      let results;
+      if (selectedTitle!==""){results = modifyResults(response.results,selectedTitle);}
+      else{results=response.results;}
       displayResults(results);
       //mw end
     } else {
@@ -264,11 +265,11 @@ function getFinalSelections(type) {
 
 //mw start
 async function getAttributes(id,genresStr, keywordsStr,castStr){
-  console.log(genresStr)
-  console.log(keywordsStr)
-  console.log(castStr)
-  //make movie search call then catch find keywords
-  //make another movies search call to get genres and cast
+  console.log(genresStr);
+  console.log(keywordsStr);
+  console.log(castStr);
+if(id!==""){
+  let first=true;
   MovieFinder.getMovieByID(id)
     .then(function(response) {
       if (response instanceof Error || !response.genres) {
@@ -276,7 +277,12 @@ async function getAttributes(id,genresStr, keywordsStr,castStr){
       
       } else {
         response.genres.forEach(function(genre){
-          genresStr+="|"+(genre.id);
+         
+          if(first===true && genresStr!==""){genresStr+="&"+(genre.id);
+          }
+          else{genresStr+="|"+(genre.id);}
+          first=false;
+          
 
         });
       }
@@ -287,8 +293,12 @@ async function getAttributes(id,genresStr, keywordsStr,castStr){
         throw response;
       
       } else {
+        first=true;
         response.cast.forEach(function(member){
-          castStr+="|"+member.id;
+          if(first===true && castStr!==""){castStr+="&"+(member.id);
+          }
+          else{castStr+="|"+member.id;}first=false
+          console.log(castStr);
         });
         // response.crew.forEach(function(member){
         //   castStr+="|"+member.id;
@@ -302,8 +312,13 @@ async function getAttributes(id,genresStr, keywordsStr,castStr){
         throw response;
       
       } else {
+        first=true;
         response.keywords.forEach(function(keyword){
-          keywordsStr+="|"+keyword.id;
+          if(first===true && keywordsStr!==""){
+            keywordsStr+="&"+keyword.id;
+        }
+          else{keywordsStr+="|"+keyword.id;}
+          first=false
         });
       }
       return MovieFinder.makeMovieCall(genresStr,keywordsStr,castStr)
@@ -314,6 +329,16 @@ async function getAttributes(id,genresStr, keywordsStr,castStr){
     .catch(function(response) {
       console.log(`Error: ${response.message}`);
     });
+  }
+  else{
+    MovieFinder.makeMovieCall(genresStr,keywordsStr,castStr).
+    then(function(response) {
+      getMovies(response,id);
+    })  
+    .catch(function(response) {
+      console.log(`Error: ${response.message}`);
+    });
+  }
 }
 //mw end
 
@@ -329,7 +354,7 @@ $("#movie-form").submit(function(event){
   let castString = getFinalSelections("cast-members");
   //mw start
   let similarTitle = getFinalSelections("title");
-  console.log(similarTitle)
+
   //get attributes [genres,cast,keywords]
   let arrayOfAttr = getAttributes(similarTitle,genresString, keywordsString,castString);
 
