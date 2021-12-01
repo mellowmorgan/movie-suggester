@@ -3,8 +3,7 @@ import { MovieFinder } from './js/movie-service.js';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
-import { start } from '@popperjs/core';
-
+import reel from './img/default.png';
 
 sessionStorage.setItem('keywordFirstClick', "true");
 
@@ -153,8 +152,8 @@ $("#selected-keywords").on("click", "button", function() {
 });
 
 function hasExactMatch(results, keyword) {
-  for(let i = 0; i < results.length; i++){
-    if(results[i].name === keyword){
+  for (let i = 0; i < results.length; i++) {
+    if (results[i].name === keyword) {
       makeButton($("#selected-keywords"), results[i].id, results[i].name);
       $("#input-keyword").val("");
       return true;
@@ -175,11 +174,11 @@ function makeKeywordSuggestions(json) {
   }
 }
 //mw start add this function to take out same movie selected for similar
-function modifyResults(results, selectedTitle){
+function modifyResults(results, selectedTitle) {
   let modifiedResults = [];
   console.log(selectedTitle);
-  results.forEach(function(movie){
-    if(movie.id.toString()!==selectedTitle){
+  results.forEach(function(movie) {
+    if (movie.id.toString() !== selectedTitle) {
       modifiedResults.push(movie);
     }
   });
@@ -193,8 +192,11 @@ function getMovies(response, selectedTitle) {
     if (response.results.length > 0) { 
       //mw start 
       let results;
-      if (selectedTitle!==""){results = modifyResults(response.results,selectedTitle);}
-      else{results=response.results;}
+      if (selectedTitle !== "") {
+        results = modifyResults(response.results,selectedTitle);
+      } else {
+        results = response.results;
+      }
       displayResults(results);
       //mw end
     } else {
@@ -209,19 +211,30 @@ function getMovies(response, selectedTitle) {
 //mw start function displayResults below I changed response.results to results//mw end
 function displayResults(results) {
   let carouselString = "";
-  let movieInner = $("#movieInner");
+  let movieInner = $("#movie-inner");
   carouselString +=`<div class="carousel-item active"><div class="row justify-content-center">`;
   for (let i = 0; i < results.length; i++) {
-    if (i % 5 === 0 && i !== 0) {
+    if (i % 3 === 0 && i !== 0) {
       carouselString +=`</div></div><div class="carousel-item"><div class="row justify-content-center">`;
     }
+    let posterPath = "";
+    if (results[i].poster_path === null) {
+      posterPath = reel;
+    } else {
+      posterPath = `https://image.tmdb.org/t/p/original/${results[i].poster_path}`;
+    }
     carouselString +=`
-    <div class="card col-2 flip-card" id=${results[i].id}>
-        <div class="flip-card-inner">
-          <div class="card-body flip-card-front">${results[i].title}</div>
-          <div class="card-body flip-card-back">${results[i].overview}</div>
-        </div>
-    </div>
+      <div class="card col-3 flip-card" id=${results[i].id}>
+          <div class="flip-card-inner">
+            <div class="card-body flip-card-front">
+            <img src="${posterPath}" class="movie-poster" alt="${results[i].title}">
+            </div>
+            <div class="card-body flip-card-back">
+            <h5 class="card-title">${results[i].title} (${results[i].release_date.slice(0, 4)})</h5>
+            <p class="description">${results[i].overview}</p>
+            </div>
+          </div>
+      </div>
     `;
   }
   carouselString +=`</div></div>`;
@@ -238,52 +251,26 @@ function getFinalSelections(type) {
   return finalString;
 }
 
-// https://image.tmdb.org/t/p/original (movie poster link)
-
-// function getID(response) {
-//   if (response.results) {
-//     if (response.results.length > 0) {  
-//       return response.results[0].id;  
-//     } else {
-//       console.log("No results found.");
-//     }
-//   } else {
-//     console.log(`Error: ${response.message}`);
-//   }
-
-// }
-//get cast from buttons adding in array
-// function getIDsList(arrayStringCast){
-  
-//   let listIDs = arrayStringCast.map(function(castPerson) {
-//     MovieFinder.getCastID(castPerson).then(function(response) {
-//       return getID(response);
-//       });
-//   });
-//   return listIDs;
-// }
 
 //mw start
-async function getAttributes(id,genresStr, keywordsStr,castStr){
+async function getAttributes(id,genresStr, keywordsStr,castStr) {
   console.log(genresStr);
   console.log(keywordsStr);
   console.log(castStr);
-if(id!==""){
-  let first=true;
+if (id !== "") {
+  let first = true;
   MovieFinder.getMovieByID(id)
     .then(function(response) {
       if (response instanceof Error || !response.genres) {
         throw response;
-      
       } else {
-        response.genres.forEach(function(genre){
-         
-          if(first===true && genresStr!==""){genresStr+="&"+(genre.id);
+        response.genres.forEach(function(genre) {
+          if (first === true && genresStr !== "") {
+            genresStr += "&" + (genre.id);
+          } else {
+            genresStr += "|" + (genre.id);
           }
-          else{genresStr+="|"+(genre.id);}
-          first=false;
-          
-
+          first = false;
         });
       }
       return MovieFinder.getCredits(id)
@@ -291,34 +278,33 @@ if(id!==""){
     .then(function(response) {
       if (response instanceof Error || !response.cast) {
         throw response;
-      
       } else {
-        first=true;
-        response.cast.forEach(function(member){
-          if(first===true && castStr!==""){castStr+="&"+(member.id);
+        first = true;
+        response.cast.forEach(function(member) {
+          if (first === true && castStr !== "") {
+            castStr += "&" + (member.id);
+          } else {
+            castStr += "|" + member.id;
           }
-          else{castStr+="|"+member.id;}first=false
+          first = false;
           console.log(castStr);
         });
-        // response.crew.forEach(function(member){
-        //   castStr+="|"+member.id;
-        // });
         
       }
-      return MovieFinder.getKeywords(id)
+      return MovieFinder.getKeywords(id);
     })
     .then(function(response) {
       if (response instanceof Error || !response.keywords) {
         throw response;
-      
       } else {
-        first=true;
-        response.keywords.forEach(function(keyword){
-          if(first===true && keywordsStr!==""){
-            keywordsStr+="&"+keyword.id;
-        }
-          else{keywordsStr+="|"+keyword.id;}
-          first=false
+        first = true;
+        response.keywords.forEach(function(keyword) {
+          if (first === true && keywordsStr !== "") {
+            keywordsStr += "&" + keyword.id;
+          } else {
+            keywordsStr += "|" + keyword.id;
+          }
+          first = false;
         });
       }
       return MovieFinder.makeMovieCall(genresStr,keywordsStr,castStr)
@@ -329,10 +315,9 @@ if(id!==""){
     .catch(function(response) {
       console.log(`Error: ${response.message}`);
     });
-  }
-  else{
-    MovieFinder.makeMovieCall(genresStr,keywordsStr,castStr).
-    then(function(response) {
+  } else {
+    MovieFinder.makeMovieCall(genresStr,keywordsStr,castStr)
+    .then(function(response) {
       getMovies(response,id);
     })  
     .catch(function(response) {
@@ -340,35 +325,16 @@ if(id!==""){
     });
   }
 }
-//mw end
 
-//mw start
-
-//mw end
-
-
-$("#movie-form").submit(function(event){
+$("#movie-form").submit(function(event) {
   event.preventDefault();
-  let genresString = getFinalSelections("genres")
+  let genresString = getFinalSelections("genres");
   let keywordsString = getFinalSelections("keywords");
   let castString = getFinalSelections("cast-members");
-  //mw start
   let similarTitle = getFinalSelections("title");
-
   //get attributes [genres,cast,keywords]
   let arrayOfAttr = getAttributes(similarTitle,genresString, keywordsString,castString);
-
-  
-
-  // genresListSimilar.forEach(function(element){
-  //   console.log(element);
- 
-  //   genresString+="|"+element;
-  // });
-  //mw end 
   $("#no-results").hide();
   $("#results").hide(); 
- 
-  
 });
 

@@ -26,7 +26,7 @@ export class MovieFinder {
       });
   }
 
-  static getCastID(name){
+  static getCastID(name) {
     return fetch(`https://api.themoviedb.org/3/search/person?api_key=${process.env.API_KEY}&query=${name}`)
       .then(function(response) {
         if (!response.ok) {
@@ -39,7 +39,7 @@ export class MovieFinder {
       });
   }
 
-  static getMoviesOfCast(stringOfCastIDs){
+  static getMoviesOfCast(stringOfCastIDs) {
     return fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}&with_people=${stringOfCastIDs}`)
     .then(function(response) {
       if (!response.ok) {
@@ -52,7 +52,7 @@ export class MovieFinder {
     });
   }
   //mw start
-  static getMovieInfo(title){
+  static getMovieInfo(title) {
     return fetch(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.API_KEY}&query=${title}`)
     .then(function(response) {
       if (!response.ok) {
@@ -64,7 +64,8 @@ export class MovieFinder {
       return error;
     });
   }
-  static getMovieByID(id){
+
+  static getMovieByID(id) {
     return fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${process.env.API_KEY}`)
     .then(function(response) {
       if (!response.ok) {
@@ -76,7 +77,8 @@ export class MovieFinder {
       return error;
     });
   }
-  static getCredits(id){
+
+  static getCredits(id) {
     return fetch(`https://api.themoviedb.org/3/movie/${id}/credits?api_key=${process.env.API_KEY}`)
     .then(function(response) {
       if (!response.ok) {
@@ -88,7 +90,8 @@ export class MovieFinder {
       return error;
     });
   }
-  static getKeywords(id){
+
+  static getKeywords(id) {
     return fetch(`https://api.themoviedb.org/3/movie/${id}/keywords?api_key=${process.env.API_KEY}`)
     .then(function(response) {
       if (!response.ok) {
