@@ -7,75 +7,83 @@
   <title>Movie Suggester</title>
 </head>
 <body>
-  <div class="container-fluid">
+  <div class="container">
     <h1>Movie Suggester</h1>
-    <nav>
-
-    </nav>
     <h2>Search for Movies</h2>
     <form id="movie-form">
-      <!-- mw start -->
-      <div class="form-group">
-        <label for="input-title" class="col-form-label">Similar movie title:</label>
-        <div id="selected-title"></div>
-        <input type="text" class="form-control" id="input-title">
-        <div class="button" id="title-btn">
-          <button id="add-title" class="btn btn-success" type="button">Add title</button>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="input-title" class="col-form-label">Similar movie title:</label>
+            <div id="selected-title"></div>
+            <input type="text" class="form-control" id="input-title">
+            <div class="button" id="title-btn">
+              <button id="add-title" class="btn btn-success" type="button">Add title</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <label for="genre" class="col-form-label">Genre(s):</label>
+          <div id="selected-genres"></div>
+          <button type="submit" disabled style="display: none" aria-hidden="true"></button>
+          <div id="select">
+            <select class="custom-select" id="genre">
+              <option selected value="">Select a genre</option>
+              <option value="28">Action</option>
+              <option value="12">Adventure</option>
+              <option value="16">Animation</option>
+              <option value="35">Comedy</option>
+              <option value="80">Crime</option>
+              <option value="99">Documentary</option>
+              <option value="18">Drama</option>
+              <option value="10751">Family</option>
+              <option value="14">Fantasy</option>
+              <option value="36">History</option>
+              <option value="27">Horror</option>
+              <option value="10402">Music</option>
+              <option value="9648">Mystery</option>
+              <option value="10749">Romance</option>
+              <option value="878">Science Fiction</option>
+              <option value="10770">TV Movie</option>
+              <option value="53">Thriller</option>
+              <option value="10752">War</option>
+              <option value="37">Western</option>
+            </select>
+            <div class="button" id="genre-btn">
+              <button id="add-genre" class="btn btn-success" type="button">Add genre</button>
+            </div>
+          </div>
         </div>
       </div>
-      <!-- mw end -->
-      <label for="genre" class="col-form-label">Genre(s):</label>
-      <div id="selected-genres"></div>
-      <button type="submit" disabled style="display: none" aria-hidden="true"></button>
-      <div id="select">
-        <select class="custom-select" id="genre">
-          <option selected value="">Select a genre</option>
-          <option value="28">Action</option>
-          <option value="12">Adventure</option>
-          <option value="16">Animation</option>
-          <option value="35">Comedy</option>
-          <option value="80">Crime</option>
-          <option value="99">Documentary</option>
-          <option value="18">Drama</option>
-          <option value="10751">Family</option>
-          <option value="14">Fantasy</option>
-          <option value="36">History</option>
-          <option value="27">Horror</option>
-          <option value="10402">Music</option>
-          <option value="9648">Mystery</option>
-          <option value="10749">Romance</option>
-          <option value="878">Science Fiction</option>
-          <option value="10770">TV Movie</option>
-          <option value="53">Thriller</option>
-          <option value="10752">War</option>
-          <option value="37">Western</option>
-        </select>
-        <div class="button" id="genre-btn">
-          <button id="add-genre" class="btn btn-success" type="button">Add genre</button>
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="cast-member" class="col-form-label">Cast Member(s):</label>
+            <div id="selected-cast-members"></div>
+            <input type="text" class="form-control" id="input-cast-member">
+            <div class="button" id="cast-member-btn">
+              <button id="add-cast-member" class="btn btn-success" type="button">Add cast member</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label for="keyword" class="col-form-label">Keyword(s):</label>
+            <div id="selected-keywords"></div>
+            <input type="text" class="form-control" id="input-keyword">
+            <div id="keyword-suggestions" class="list-group"></div>
+            <div class="button" id="keyword-btn">
+              <button id="add-keyword" class="btn btn-success" type="button">Add keyword</button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="form-group">
-        <label for="cast-member" class="col-form-label">Cast Member(s):</label>
-        <div id="selected-cast-members"></div>
-        <input type="text" class="form-control" id="input-cast-member">
-        <div class="button" id="cast-member-btn">
-          <button id="add-cast-member" class="btn btn-success" type="button">Add cast member</button>
-        </div>
-      </div>
-      <div class="form-group">
-        <label for="keyword" class="col-form-label">Keyword(s):</label>
-        <div id="selected-keywords"></div>
-        <input type="text" class="form-control" id="input-keyword">
-        <div id="keyword-suggestions" class="list-group"></div>
-        <div class="button" id="keyword-btn">
-          <button id="add-keyword" class="btn btn-success" type="button">Add keyword</button>
-        </div>
-      </div>
-      <div class="button">
+      <div class="submit-button-area">
         <button id="submit" class="btn btn-success" type="submit">Search</button>
         <button id="reset" class="btn btn-warning" type="reset">Reset</button>
       </div>
     </form>
+  </div>
     <div id="results">
       <div id="movie-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
         <div id="movie-inner" class="carousel-inner"></div>
@@ -90,6 +98,5 @@
       </div>
     </div>
     <div id="no-results"><p id="no-styles">No results found.</p></div>
-  </div>
 </body>
 </html>

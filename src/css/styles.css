@@ -1,9 +1,15 @@
 body {
-  background-color: rgb(70, 3, 70);
-  color: blanchedalmond;
+  background: linear-gradient(#093485,#000000);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color:white;
   --card-height: 50vh;
 }
 
+.submit-button-area {
+  padding: 2vh;
+  text-align: center;
+}
 
 #movie-carousel {
   margin-bottom: 100px;
@@ -41,6 +47,7 @@ body {
 .flip-card-back {
   transform: rotateY(180deg);
   height: var(--card-height);
+  overflow: auto;
 }
 
 .movie-poster {
@@ -59,6 +66,7 @@ body {
   overflow: auto;
   display: none;
 }
+
 .tag-btn-x {
   color: pink;
   font-weight: bold;
