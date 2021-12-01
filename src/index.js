@@ -140,7 +140,8 @@ function getMovies(response) {
     if (response.results.length > 0) {  
       displayResults(response);
     } else {
-      console.log("No results found.");
+      //console.log("No results found.");
+      $("#no-results").show();
     }
   } else {
     console.log(`Error: ${response.message}`);
@@ -163,6 +164,7 @@ function displayResults(response) {
   }
   carouselString +=`</div></div>`;
   movieInner.html(carouselString);
+  $("#results").show();
 }
 
 function getFinalSelections(type) {
@@ -204,9 +206,12 @@ $("#movie-form").submit(function(event){
   let genresString = getFinalSelections("genres")
   let keywordsString = getFinalSelections("keywords");
   let castString = getFinalSelections("cast-members");
+  $("#no-results").hide();
+  $("#results").hide();
   MovieFinder.makeMovieCall(genresString,keywordsString, castString)
     .then(function(response) {
       getMovies(response);
     });
+  
 });
 

@@ -1,6 +1,11 @@
 body {
   background-color: rgb(70, 3, 70);
-  color: gold
+  color: blanchedalmond;
+}
+
+#results, #no-results {
+  display: none;
+  margin-top: 10vh;
 }
 
 #keyword-suggestions {
@@ -19,9 +24,11 @@ body {
 } 
 
 .card {
+  color: darkslategray;
   display: inline-block;
   margin: 0 auto;
   padding: 0;
+  min-height: 20vh;
 }
 
 .card-body {
@@ -34,4 +41,9 @@ body {
   width: 80%;
   position: relative;
   left: 10%;
+}
+
+#no-styles {
+  text-align: center;
+  font-size: 40px;
 }
