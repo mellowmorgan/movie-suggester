@@ -157,8 +157,11 @@ function displayResults(response) {
       carouselString +=`</div></div><div class="carousel-item"><div class="row justify-content-center">`;
     }
     carouselString +=`
-    <div class="card col-2" id=${response.results[i].id}>
-      <div class="card-body">Movie title: ${response.results[i].title}</div>
+    <div class="card col-2 flip-card" id=${response.results[i].id}>
+        <div class="flip-card-inner">
+          <div class="card-body flip-card-front">${response.results[i].title}</div>
+          <div class="card-body flip-card-back">${response.results[i].overview}</div>
+        </div>
     </div>
     `;
   }
