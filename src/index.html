@@ -14,6 +14,16 @@
     </nav>
     <h2>Search for Movies</h2>
     <form id="movie-form">
+      <!-- mw start -->
+      <div class="form-group">
+        <label for="input-title" class="col-form-label">Similar movie title:</label>
+        <div id="selected-title"></div>
+        <input type="text" class="form-control" id="input-title">
+        <div class="button" id="title-btn">
+          <button id="add-title" class="btn btn-success" type="button">Add title</button>
+        </div>
+      </div>
+      <!-- mw end -->
       <label for="genre" class="col-form-label">Genre(s):</label>
       <div id="selected-genres"></div>
       <button type="submit" disabled style="display: none" aria-hidden="true"></button>

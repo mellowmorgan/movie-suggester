@@ -21,6 +21,45 @@ function makeButton(div, value, text) {
   }
 }
 
+//mw start
+
+$("#add-title").on("click", () => {
+  let movie = $("#input-title");
+  if (movie.val() !== "") {
+    MovieFinder.getMovieInfo(movie.val())
+    .then(function(response) {
+      if (response instanceof Error) {
+        throw response;
+      } else if (response.results.length === 0) {
+        throw Error("no results");
+      } else {
+        makeButton($("#selected-title"), response.results[0].id, response.results[0].title);
+        movie.val("");
+        console.log(response.results[0].title);
+        $("#input-title").prop("disabled", true);
+      }
+    })
+    .catch(function(response) {
+      if (response.message === "no results") {
+        console.log("Error: no results");
+        $("#input-title").val("");
+      } else {
+        console.log(`Error: ${response.message}`);
+        $("#input-title").val("");
+      }
+    });
+  }
+});
+
+$("#selected-title").on("click", "button", function() {
+  $(this).remove();
+  $("#input-title").prop("disabled", false);
+});
+
+//mw end
+
+
+
 $("#add-genre").on("click", () => {
   let option = $("#genre :selected");
   if (option.val() !== "" && option.prop("disabled") === false) {
@@ -204,11 +243,62 @@ function getFinalSelections(type) {
 //   return listIDs;
 // }
 
+//mw start
+function getAttributes(id){
+  let = genreListTitle;
+  let = keywordArrayTitle=[];
+  let = creditsArrayTitle=[];
+  //make movie search call then catch find keywords
+  //make another movies search call to get genres and cast
+  MovieFinder.getMovieByID(id)
+    .then(function(response) {
+      if (response instanceof Error || !response.genres) {
+        throw response;
+      
+      } else {
+        response.genres.forEach(function(genre){
+          genreListTitle.concat(genre.id+",");
+        });
+      }
+    })
+    .catch(function(response) {
+        console.log(`Error: ${response.message}`);
+      });
+
+      //get credits list
+    MovieFinder.getCredits(id)
+    .then(function(response) {
+      if (response instanceof Error || !response.cast) {
+        throw response;
+      
+      } else {
+        response.cast.forEach(function(member){
+          creditsArrayTitle.push(member.id);
+        });
+        response.crew.forEach(function(member){
+          creditsArrayTitle.push(member.id);
+        });
+      }
+    })
+    .catch(function(response) {
+        console.log(`Error: ${response.message}`);
+      });
+    
+    
+ 
+}
+//mw end
+
 $("#movie-form").submit(function(event){
   event.preventDefault();
   let genresString = getFinalSelections("genres")
   let keywordsString = getFinalSelections("keywords");
   let castString = getFinalSelections("cast-members");
+  //mw start
+  let similarTitle = getFinalSelections("title");
+  //get attributes [genres,cast,keywords]
+  let arrayOfAttr = getAttributes(similarTitle);
+  //mw end 
   $("#no-results").hide();
   $("#results").hide();
   MovieFinder.makeMovieCall(genresString,keywordsString, castString)
