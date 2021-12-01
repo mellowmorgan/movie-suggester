@@ -87,6 +87,18 @@ export class MovieFinder {
       return error;
     });
   }
+  static getKeywords(id){
+    return fetch(`https://api.themoviedb.org/3/movie/${id}/keywords?api_key=${process.env.API_KEY}`)
+    .then(function(response) {
+      if (!response.ok) {
+        throw Error(response.statusText);
+      }
+      return response.json(); 
+    }) 
+    .catch(function(error) {
+      return error;
+    });
+  }
   
   //mw end
 }
