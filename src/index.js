@@ -16,12 +16,25 @@ function makeButton(div, value, text) {
   });
   if (!match) {
     div.append(`
-        <button class="btn btn-success tag-btn" type="button" value="${value}">${text} <span class="tag-btn-x">X</span></button>
+        <button class="btn btn-danger tag-btn" type="button" value="${value}">&nbsp;&nbsp;${text} <span class="tag-btn-x">&nbsp;x</span></button>
       `);
   }
 }
 
 //mw start
+
+$("#reset").on("click", () => {
+  $("#selected-genres").empty();
+  $("#selected-keywords").empty();
+  $("#selected-cast-members").empty();
+  $("#selected-title").empty();
+  $("#input-title").prop("disabled",false);
+  $(`#genre option`).each(function() {
+    if ($(this).prop("disabled") === true) {
+      $(this).prop("disabled", false);
+    }
+  });
+});
 
 $("#add-title").on("click", () => {
   let movie = $("#input-title");
@@ -223,6 +236,12 @@ function displayResults(results) {
     } else {
       posterPath = `https://image.tmdb.org/t/p/original/${results[i].poster_path}`;
     }
+    let releaseDate="";
+    if(results[i].release_date && results[i].release_date !== ""){
+      releaseDate =`(${results[i].release_date.slice(0, 4)})`;
+    } else {
+      releaseDate = "";
+    }
     carouselString +=`
       <div class="card col-3 flip-card" id=${results[i].id}>
           <div class="flip-card-inner">
@@ -230,7 +249,7 @@ function displayResults(results) {
             <img src="${posterPath}" class="movie-poster" alt="${results[i].title}">
             </div>
             <div class="card-body flip-card-back">
-            <h5 class="card-title">${results[i].title} (${results[i].release_date.slice(0, 4)})</h5>
+            <h5 class="card-title">${results[i].title} ${releaseDate}</h5>
             <p class="description">${results[i].overview}</p>
             </div>
           </div>

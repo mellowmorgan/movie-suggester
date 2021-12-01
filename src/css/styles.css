@@ -1,4 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Limelight&family=Roboto&display=swap');
+
 body {
+  font-family: 'Roboto', sans-serif;
   background: linear-gradient(#093485,#000000);
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -6,9 +9,41 @@ body {
   --card-height: 50vh;
 }
 
+h1 {
+  font-family: 'Limelight', cursive;
+  font-size: 4rem;
+  text-align: center;
+  padding-top: 1rem;
+}
+
 .submit-button-area {
   padding: 2vh;
-  text-align: center;
+  text-align: right;
+}
+
+
+.tag-btn-x {
+  font-size: 1.2em;
+  color: rgb(180, 180, 180)
+}
+.btn-danger{
+  background-color: rgb(180, 180, 180);
+  border:rgb(180, 180, 180);
+  color: black;
+}
+.btn-danger:hover{
+  background-color: grey;
+  border:grey;
+  color: darkgrey;
+}
+
+.tag-btn {
+  border-radius: 1.5em;
+  border:black;
+  padding: 0 .5em;
+}
+.btn-float-right{
+  float:right;
 }
 
 #movie-carousel {
@@ -57,20 +92,15 @@ body {
 
 #results, #no-results {
   display: none;
-  margin-top: 10vh;
+  margin-top: 1vh;
 }
 
 #keyword-suggestions {
-  width: 500px;
-  height: 20vh;
+  max-height: 20vh;
   overflow: auto;
   display: none;
 }
 
-.tag-btn-x {
-  color: pink;
-  font-weight: bold;
-}
 
 .card {
   background-color: transparent;
