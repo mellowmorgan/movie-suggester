@@ -3,6 +3,7 @@ import { MovieFinder } from './js/movie-service.js';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './css/styles.css';
+import { start } from '@popperjs/core';
 
 
 sessionStorage.setItem('keywordFirstClick', "true");
@@ -173,13 +174,29 @@ function makeKeywordSuggestions(json) {
     `);
   }
 }
+//mw start add this function to take out same movie selected for similar
+function modifyResults(results, selectedTitle){
+  let modifiedResults = [];
+  console.log(selectedTitle);
+  results.forEach(function(movie){
+    if(movie.id.toString()!==selectedTitle){
+      modifiedResults.push(movie);
+    }
+  });
+  return modifiedResults;
+}
+//mw end
 
-function getMovies(response) {
+//mw start selectedTitle added as parameter//mw end
+function getMovies(response, selectedTitle) {
   if (response.results) {
-    if (response.results.length > 0) {  
-      displayResults(response);
+    if (response.results.length > 0) { 
+      //mw start 
+      let results = modifyResults(response.results,selectedTitle);
+      console.log(results);
+      displayResults(results);
+      //mw end
     } else {
-      //console.log("No results found.");
       $("#no-results").show();
     }
   } else {
@@ -187,19 +204,21 @@ function getMovies(response) {
   }
 }
 
-function displayResults(response) {
+
+//mw start function displayResults below I changed response.results to results//mw end
+function displayResults(results) {
   let carouselString = "";
   let movieInner = $("#movieInner");
   carouselString +=`<div class="carousel-item active"><div class="row justify-content-center">`;
-  for (let i = 0; i < response.results.length; i++) {
+  for (let i = 0; i < results.length; i++) {
     if (i % 5 === 0 && i !== 0) {
       carouselString +=`</div></div><div class="carousel-item"><div class="row justify-content-center">`;
     }
     carouselString +=`
-    <div class="card col-2 flip-card" id=${response.results[i].id}>
+    <div class="card col-2 flip-card" id=${results[i].id}>
         <div class="flip-card-inner">
-          <div class="card-body flip-card-front">${response.results[i].title}</div>
-          <div class="card-body flip-card-back">${response.results[i].overview}</div>
+          <div class="card-body flip-card-front">${results[i].title}</div>
+          <div class="card-body flip-card-back">${results[i].overview}</div>
         </div>
     </div>
     `;
@@ -261,13 +280,8 @@ async function getAttributes(id,genresStr, keywordsStr,castStr){
 
         });
       }
+      return MovieFinder.getCredits(id)
     })
-    .catch(function(response) {
-        console.log(`Error: ${response.message}`);
-      });
-
-      //get credits list
-    MovieFinder.getCredits(id)
     .then(function(response) {
       if (response instanceof Error || !response.cast) {
         throw response;
@@ -281,13 +295,8 @@ async function getAttributes(id,genresStr, keywordsStr,castStr){
         // });
         
       }
+      return MovieFinder.getKeywords(id)
     })
-    .catch(function(response) {
-        console.log(`Error: ${response.message}`);
-      });
-    
-    //getKeywords
-    MovieFinder.getKeywords(id)
     .then(function(response) {
       if (response instanceof Error || !response.keywords) {
         throw response;
@@ -297,22 +306,19 @@ async function getAttributes(id,genresStr, keywordsStr,castStr){
           keywordsStr+="|"+keyword.id;
         });
       }
+      return MovieFinder.makeMovieCall(genresStr,keywordsStr,castStr)
+    })
+    .then(function(response) {
+      getMovies(response, id);
     })  
     .catch(function(response) {
       console.log(`Error: ${response.message}`);
     });
-    
-    //doFinal(genresStr, keywordsStr,castStr);
 }
 //mw end
 
 //mw start
-function doFinal(genres,keywords,credits){
-MovieFinder.makeMovieCall(genres,keywords,credits)
-.then(function(response) {
-  getMovies(response);
-});
-}
+
 //mw end
 
 
