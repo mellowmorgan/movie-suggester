@@ -24,6 +24,10 @@ function makeButton(div, value, text) {
 //mw start
 
 $("#reset").on("click", () => {
+  $("#keyword-suggestions").slideToggle();
+  $("#keyword-suggestions").html("");
+  sessionStorage.setItem('keywordFirstClick', "true");
+  $("#input-keyword").prop("disabled", false);
   $("#selected-genres").empty();
   $("#selected-keywords").empty();
   $("#selected-cast-members").empty();

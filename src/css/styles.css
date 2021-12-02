@@ -16,32 +16,46 @@ h1 {
   padding-top: 1rem;
 }
 
-.submit-button-area {
-  padding: 2vh;
-  text-align: right;
+.plus {
+  font-size: 1.5rem;
 }
-
+label{
+  display:block;
+}
+.submit-button-area {
+  padding: 2vh 2vh 2vh 0vh;
+  text-align: left;
+}
 
 .tag-btn-x {
   font-size: 1.2em;
-  color: rgb(180, 180, 180)
+  color: #CE6C47;
 }
+
+.btn {
+  display: inline-block;
+  margin: 0 0 0.23vh 0;
+  padding: 0 9px;
+
+}
+
 .btn-danger{
-  background-color: rgb(180, 180, 180);
-  border:rgb(180, 180, 180);
-  color: black;
+  background-color: #CE6C47;
+  border: 1px black solid;
+  color: white
 }
+
 .btn-danger:hover{
-  background-color: grey;
-  border:grey;
-  color: darkgrey;
+  background-color: #960200;
+  border: 1px solid white;
+  color: white;
 }
 
 .tag-btn {
   border-radius: 1.5em;
-  border:black;
   padding: 0 .5em;
 }
+
 .btn-float-right{
   float:right;
 }
@@ -78,7 +92,6 @@ h1 {
   backface-visibility: hidden;
 }
 
-
 .flip-card-back {
   transform: rotateY(180deg);
   height: var(--card-height);
@@ -99,8 +112,8 @@ h1 {
   max-height: 20vh;
   overflow: auto;
   display: none;
+  max-width: 70%;
 }
-
 
 .card {
   background-color: transparent;
@@ -125,8 +138,26 @@ h1 {
   position: relative;
   left: 10%;
 }
-
+#tag-div{
+padding-top:5px;
+}
 #no-styles {
   text-align: center;
   font-size: 40px;
 }
+
+#movie-form {
+  display: inline-block;
+  padding: 0;
+  width: 100%;
+}
+
+#movie-form input, #movie-form select {
+  width: 70%;
+  display:inline;
+}
+
+input.form-check-input {
+  padding: 0 6px;
+}
+
