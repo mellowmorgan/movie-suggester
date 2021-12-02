@@ -21,9 +21,8 @@ function makeButton(div, value, text) {
   }
 }
 
-//mw start
-
 $("#reset").on("click", () => {
+  $("#no-results").hide();
   $("#keyword-suggestions").slideToggle();
   $("#keyword-suggestions").html("");
   sessionStorage.setItem('keywordFirstClick', "true");
@@ -72,10 +71,6 @@ $("#selected-title").on("click", "button", function() {
   $(this).remove();
   $("#input-title").prop("disabled", false);
 });
-
-//mw end
-
-
 
 $("#add-genre").on("click", () => {
   let option = $("#genre :selected");

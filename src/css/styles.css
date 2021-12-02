@@ -13,15 +13,17 @@ h1 {
   font-family: 'Limelight', cursive;
   font-size: 4rem;
   text-align: center;
-  padding-top: 1rem;
+  margin: 4vh 0;
 }
 
 .plus {
   font-size: 1.5rem;
 }
-label{
-  display:block;
+
+label {
+  display: block;
 }
+
 .submit-button-area {
   padding: 2vh 2vh 2vh 0vh;
   text-align: left;
@@ -68,10 +70,6 @@ label{
   width: 10%;
 }
 
-.flip-card {
-  perspective: 1000px;
-}
-
 .flip-card-inner {
   position: relative;
   width: 100%;
@@ -80,6 +78,10 @@ label{
   transition: transform 0.6s;
   transform-style: preserve-3d;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+#reset, #submit{
+  font-weight:bold;
+  padding:.25em .75em;
 }
 
 .flip-card:hover .flip-card-inner {
@@ -103,9 +105,15 @@ label{
   max-height: calc(var(--card-height) *.96);
 }
 
-#results, #no-results {
+#results {
   display: none;
-  margin-top: 1vh;
+  margin-top: 4vh;
+}
+
+#no-results {
+  display: none;
+  font-family: 'Limelight', cursive;
+  margin-top: 15vh;
 }
 
 #keyword-suggestions {
@@ -138,9 +146,14 @@ label{
   position: relative;
   left: 10%;
 }
-#tag-div{
-padding-top:5px;
+
+.tag-div{
+  background-color: rgba(255, 255, 255, 0.116);
+  border-radius: 1em;
+  min-height: 20vh;
+  padding: calc(0.375rem + 1px) 1em;
 }
+
 #no-styles {
   text-align: center;
   font-size: 40px;
@@ -160,4 +173,3 @@ padding-top:5px;
 input.form-check-input {
   padding: 0 6px;
 }
-
