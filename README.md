@@ -1,31 +1,39 @@
-# (Application Name)
+# Movie Suggester
 
-#### (Brief Description of Application)
+#### A web application to suggest films based on user-selected filters.
 
-#### By (Your Name Here)
+#### By Morgan Waites, Katie Pundt, Aaron Minnick and Frank Proulx. 
 
 ## Technologies Used
 
-* _List all_
-* _the major technologies_
-* _you used in your project_
-* _here_
+* HTML/CSS
+* Bootstrap
+* Javascript/JQuery
+* Webpack
+* [TMDB API](https://www.themoviedb.org/documentation/api?language=en-US)
 
 ## Description
 
+Movie Suggester web application uses the TMDB API to get movie data to make recommendations to the user. The recommendations are based on the users input and selections in the form shown upon loading the page. Filter options include similar movie title, keywords, genres, and cast members. On submission of the form, a carousel of movie cards appears that the user can click through. The user can then flip each card with the movie poster to reveal each movie's details.
+
+## GitHub Page
+
+See our github page [here]()!
+
 ## Setup/Installation Requirements
 
-* _This is a great place_
-* _to list setup instructions_
-* _in a simple_
-* _easy-to-understand_
-* _format_
+* In your terminal, cd to desired folder you wish to hold this project
+* git clone this repository
+* npm install
+* touch .env to create an .env file to hold API
+* Sign up for an account at [TMDB](https://www.themoviedb.org/) and get a free API key
+* Store API key in a variable called API_KEY in .env file
+* npm run start
 
 ## Known Bugs
 
-* _Any known issues_
-* _should go here_
+No known bugs.
 
 ## License
 
-## Contact Information
+[MIT](https://opensource.org/licenses/MIT) Copyright(c) 2021 Morgan Waites, Katie Pundt, Aaron Minnick and Frank Proulx.
