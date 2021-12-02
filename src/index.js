@@ -260,7 +260,7 @@ function getFinalSelections(type) {
   return finalString;
 }
 
-async function getAttributes(id,genresStr, keywordsStr,castStr) {
+async function getAttributes(id, genresStr, keywordsStr, castStr) {
 if (id !== "") {
   let first = true;
   MovieFinder.getMovieByID(id)
@@ -310,7 +310,7 @@ if (id !== "") {
           first = false;
         });
       }
-      return MovieFinder.makeMovieCall(genresStr,keywordsStr,castStr)
+      return MovieFinder.makeMovieCall(genresStr, keywordsStr, castStr)
     })
     .then(function(response) {
       getMovies(response, id);
@@ -319,7 +319,7 @@ if (id !== "") {
       console.log(`Error: ${response.message}`);
     });
   } else {
-    MovieFinder.makeMovieCall(genresStr,keywordsStr,castStr)
+    MovieFinder.makeMovieCall(genresStr, keywordsStr, castStr)
     .then(function(response) {
       getMovies(response,id);
     })  
@@ -335,7 +335,7 @@ $("#movie-form").submit(function(event) {
   let keywordsString = getFinalSelections("keywords");
   let castString = getFinalSelections("cast-members");
   let similarTitle = getFinalSelections("title");
-  let arrayOfAttr = getAttributes(similarTitle,genresString, keywordsString,castString);
+  getAttributes(similarTitle,genresString, keywordsString,castString);
   $("#no-results").hide();
   $("#results").hide(); 
 });
