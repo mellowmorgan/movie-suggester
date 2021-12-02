@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Movie Suggester</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Movie Suggester</h1>
+    <h4>Find the perfect movie for you.</h4>
+    <div class="row">
+      <div class="col-7">
+        <form id="movie-form">
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="input-title" class="col-form-label">Search by similar movie:</label>
+                <input type="text" class="form-control" id="input-title">
+                <button id="add-title" class="btn btn-info" type="button"><span class="plus">+</span></button>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label for="cast-member" class="col-form-label">Cast Member(s):</label>
+                <input type="text" class="form-control" id="input-cast-member">
+                <button id="add-cast-member" class="btn btn-info" type="button"><span class="plus">+</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label for="keyword" class="col-form-label">Keyword(s):</label>
+                <input type="text" class="form-control" id="input-keyword">
+                <button id="add-keyword" class="btn btn-info" type="button"><span class="plus">+</span></button>
+                <div id="keyword-suggestions" class="list-group"></div>
+              </div>
+            </div>
+            <div class="col-6">
+              <label for="genre" class="col-form-label">Genre(s):</label>
+              <button type="submit" disabled style="display: none" aria-hidden="true"></button>
+              <div id="select">
+                <select class="custom-select form-select"  id="genre">
+                  <option selected value="">Select a genre</option>
+                  <option value="28">Action</option>
+                  <option value="12">Adventure</option>
+                  <option value="16">Animation</option>
+                  <option value="35">Comedy</option>
+                  <option value="80">Crime</option>
+                  <option value="99">Documentary</option>
+                  <option value="18">Drama</option>
+                  <option value="10751">Family</option>
+                  <option value="14">Fantasy</option>
+                  <option value="36">History</option>
+                  <option value="27">Horror</option>
+                  <option value="10402">Music</option>
+                  <option value="9648">Mystery</option>
+                  <option value="10749">Romance</option>
+                  <option value="878">Science Fiction</option>
+                  <option value="10770">TV Movie</option>
+                  <option value="53">Thriller</option>
+                  <option value="10752">War</option>
+                  <option value="37">Western</option>
+                </select>
+                <button id="add-genre" class="btn btn-info" type="button"><span class="plus">+</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="submit-button-area">
+            <button id="submit" class="btn btn-lg btn-info" type="submit">Search</button>
+            <button id="reset" class="btn btn-lg btn-light" type="reset">Reset</button>
+          </div>
+        </form>
+      </div>
+      <div class="col-5">
+        <div class="tag-div">
+          <p>Filter(s):</p>
+          <div id="selected-title"></div>
+          <div id="selected-cast-members"></div>
+          <div id="selected-keywords"></div>
+          <div id="selected-genres"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="results">
+    <div id="movie-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="false">
+      <div id="movie-inner" class="carousel-inner"></div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#movie-carousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#movie-carousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+  <div id="no-results"><p id="no-styles">No results found.</p></div>
+<script type="text/javascript" src="bundle.js"></script></body>
+</html>
