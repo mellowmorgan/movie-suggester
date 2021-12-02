@@ -17,7 +17,7 @@ module.exports = {
     new Dotenv(),
     new CleanWebpackPlugin(), 
     new HtmlWebpackPlugin({
-      title: 'journal-entry-project',
+      title: 'movie-suggester',
       template: './src/index.html',
       inject: 'body'
     })

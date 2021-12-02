@@ -43,26 +43,26 @@ $("#add-title").on("click", () => {
   let movie = $("#input-title");
   if (movie.val() !== "") {
     MovieFinder.getMovieInfo(movie.val())
-    .then(function(response) {
-      if (response instanceof Error) {
-        throw response;
-      } else if (response.results.length === 0) {
-        throw Error("no results");
-      } else {
-        makeButton($("#selected-title"), response.results[0].id, response.results[0].title);
-        movie.val("");
-        $("#input-title").prop("disabled", true);
-      }
-    })
-    .catch(function(response) {
-      if (response.message === "no results") {
-        console.log("Error: no results");
-        $("#input-title").val("");
-      } else {
-        console.log(`Error: ${response.message}`);
-        $("#input-title").val("");
-      }
-    });
+      .then(function(response) {
+        if (response instanceof Error) {
+          throw response;
+        } else if (response.results.length === 0) {
+          throw Error("no results");
+        } else {
+          makeButton($("#selected-title"), response.results[0].id, response.results[0].title);
+          movie.val("");
+          $("#input-title").prop("disabled", true);
+        }
+      })
+      .catch(function(response) {
+        if (response.message === "no results") {
+          console.log("Error: no results");
+          $("#input-title").val("");
+        } else {
+          console.log(`Error: ${response.message}`);
+          $("#input-title").val("");
+        }
+      });
   }
 });
 
@@ -89,25 +89,25 @@ $("#add-cast-member").on("click", () => {
   let cast = $("#input-cast-member");
   if (cast.val() !== "") {
     MovieFinder.getCastID(cast.val())
-    .then(function(response) {
-      if (response instanceof Error) {
-        throw response;
-      } else if (response.results.length === 0) {
-        throw Error("no results");
-      } else {
-        makeButton($("#selected-cast-members"), response.results[0].id, response.results[0].name);
-        cast.val("");
-      }
-    })
-    .catch(function(response) {
-      if (response.message === "no results") {
-        console.log("Error: no results");
-        $("#input-keyword").val("");
-      } else {
-        console.log(`Error: ${response.message}`);
-        $("#input-keyword").val("");
-      }
-    });
+      .then(function(response) {
+        if (response instanceof Error) {
+          throw response;
+        } else if (response.results.length === 0) {
+          throw Error("no results");
+        } else {
+          makeButton($("#selected-cast-members"), response.results[0].id, response.results[0].name);
+          cast.val("");
+        }
+      })
+      .catch(function(response) {
+        if (response.message === "no results") {
+          console.log("Error: no results");
+          $("#input-keyword").val("");
+        } else {
+          console.log(`Error: ${response.message}`);
+          $("#input-keyword").val("");
+        }
+      });
   }
 });
 
@@ -120,31 +120,31 @@ $("#add-keyword").on("click", () => {
   if (keyword !== "") {
     if (sessionStorage.getItem('keywordFirstClick') === 'true') {
       MovieFinder.keywordFinder(keyword)
-      .then(function(response) {
-        if (response instanceof Error) {
-          throw response;
-        }
-        if (response.results.length === 0) {
-          throw Error("no results");
-        }
-        
-        let matched = hasExactMatch(response.results, keyword);
-        if (!matched) {
-          makeKeywordSuggestions(response);
-          $("#keyword-suggestions").slideToggle();
-          sessionStorage.setItem('keywordFirstClick', "false");
-          $("#input-keyword").prop("disabled", true);
-        } 
-      })
-      .catch(function(response) {
-        if (response.message === "no results") {
-          console.log("Error: no results");
-          $("#input-keyword").val("");
-        } else {
-          console.log(`Error: ${response.message}`);
-          $("#input-keyword").val("");
-        }
-      });
+        .then(function(response) {
+          if (response instanceof Error) {
+            throw response;
+          }
+          if (response.results.length === 0) {
+            throw Error("no results");
+          }
+          
+          let matched = hasExactMatch(response.results, keyword);
+          if (!matched) {
+            makeKeywordSuggestions(response);
+            $("#keyword-suggestions").slideToggle();
+            sessionStorage.setItem('keywordFirstClick', "false");
+            $("#input-keyword").prop("disabled", true);
+          } 
+        })
+        .catch(function(response) {
+          if (response.message === "no results") {
+            console.log("Error: no results");
+            $("#input-keyword").val("");
+          } else {
+            console.log(`Error: ${response.message}`);
+            $("#input-keyword").val("");
+          }
+        });
     } else {
       $("#keyword-suggestions :checked").each(function() {
         makeButton($("#selected-keywords"), $(this).val(), $(this).parent().text());
@@ -261,71 +261,71 @@ function getFinalSelections(type) {
 }
 
 async function getAttributes(id, genresStr, keywordsStr, castStr) {
-if (id !== "") {
-  let first = true;
-  MovieFinder.getMovieByID(id)
-    .then(function(response) {
-      if (response instanceof Error || !response.genres) {
-        throw response;
-      } else {
-        response.genres.forEach(function(genre) {
-          if (first === true && genresStr !== "") {
-            genresStr += "&" + (genre.id);
-          } else {
-            genresStr += "|" + (genre.id);
-          }
-          first = false;
-        });
-      }
-      return MovieFinder.getCredits(id)
-    })
-    .then(function(response) {
-      if (response instanceof Error || !response.cast) {
-        throw response;
-      } else {
-        first = true;
-        response.cast.forEach(function(member) {
-          if (first === true && castStr !== "") {
-            castStr += "&" + (member.id);
-          } else {
-            castStr += "|" + member.id;
-          }
-          first = false;
-        });
-        
-      }
-      return MovieFinder.getKeywords(id);
-    })
-    .then(function(response) {
-      if (response instanceof Error || !response.keywords) {
-        throw response;
-      } else {
-        first = true;
-        response.keywords.forEach(function(keyword) {
-          if (first === true && keywordsStr !== "") {
-            keywordsStr += "&" + keyword.id;
-          } else {
-            keywordsStr += "|" + keyword.id;
-          }
-          first = false;
-        });
-      }
-      return MovieFinder.makeMovieCall(genresStr, keywordsStr, castStr)
-    })
-    .then(function(response) {
-      getMovies(response, id);
-    })  
-    .catch(function(response) {
-      console.log(`Error: ${response.message}`);
-    });
+  if (id !== "") {
+    let first = true;
+    MovieFinder.getMovieByID(id)
+      .then(function(response) {
+        if (response instanceof Error || !response.genres) {
+          throw response;
+        } else {
+          response.genres.forEach(function(genre) {
+            if (first === true && genresStr !== "") {
+              genresStr += "&" + (genre.id);
+            } else {
+              genresStr += "|" + (genre.id);
+            }
+            first = false;
+          });
+        }
+        return MovieFinder.getCredits(id);
+      })
+      .then(function(response) {
+        if (response instanceof Error || !response.cast) {
+          throw response;
+        } else {
+          first = true;
+          response.cast.forEach(function(member) {
+            if (first === true && castStr !== "") {
+              castStr += "&" + (member.id);
+            } else {
+              castStr += "|" + member.id;
+            }
+            first = false;
+          });
+          
+        }
+        return MovieFinder.getKeywords(id);
+      })
+      .then(function(response) {
+        if (response instanceof Error || !response.keywords) {
+          throw response;
+        } else {
+          first = true;
+          response.keywords.forEach(function(keyword) {
+            if (first === true && keywordsStr !== "") {
+              keywordsStr += "&" + keyword.id;
+            } else {
+              keywordsStr += "|" + keyword.id;
+            }
+            first = false;
+          });
+        }
+        return MovieFinder.makeMovieCall(genresStr, keywordsStr, castStr);
+      })
+      .then(function(response) {
+        getMovies(response, id);
+      })  
+      .catch(function(response) {
+        console.log(`Error: ${response.message}`);
+      });
   } else {
     MovieFinder.makeMovieCall(genresStr, keywordsStr, castStr)
-    .then(function(response) {
-      getMovies(response,id);
-    })  
-    .catch(function(response) {
-      console.log(`Error: ${response.message}`);
-    });
+      .then(function(response) {
+        getMovies(response,id);
+      })  
+      .catch(function(response) {
+        console.log(`Error: ${response.message}`);
+      });
   }
 }
 
