@@ -51,7 +51,6 @@ $("#add-title").on("click", () => {
       } else {
         makeButton($("#selected-title"), response.results[0].id, response.results[0].title);
         movie.val("");
-        console.log(response.results[0].title);
         $("#input-title").prop("disabled", true);
       }
     })
@@ -185,10 +184,8 @@ function makeKeywordSuggestions(json) {
     `);
   }
 }
-//mw start add this function to take out same movie selected for similar
 function modifyResults(results, selectedTitle) {
   let modifiedResults = [];
-  console.log(selectedTitle);
   results.forEach(function(movie) {
     if (movie.id.toString() !== selectedTitle) {
       modifiedResults.push(movie);
@@ -196,13 +193,10 @@ function modifyResults(results, selectedTitle) {
   });
   return modifiedResults;
 }
-//mw end
 
-//mw start selectedTitle added as parameter//mw end
 function getMovies(response, selectedTitle) {
   if (response.results) {
     if (response.results.length > 0) { 
-      //mw start 
       let results;
       if (selectedTitle !== "") {
         results = modifyResults(response.results,selectedTitle);
@@ -210,7 +204,6 @@ function getMovies(response, selectedTitle) {
         results = response.results;
       }
       displayResults(results);
-      //mw end
     } else {
       $("#no-results").show();
     }
@@ -219,8 +212,6 @@ function getMovies(response, selectedTitle) {
   }
 }
 
-
-//mw start function displayResults below I changed response.results to results//mw end
 function displayResults(results) {
   let carouselString = "";
   let movieInner = $("#movie-inner");
@@ -269,12 +260,7 @@ function getFinalSelections(type) {
   return finalString;
 }
 
-
-//mw start
 async function getAttributes(id,genresStr, keywordsStr,castStr) {
-  console.log(genresStr);
-  console.log(keywordsStr);
-  console.log(castStr);
 if (id !== "") {
   let first = true;
   MovieFinder.getMovieByID(id)
@@ -305,7 +291,6 @@ if (id !== "") {
             castStr += "|" + member.id;
           }
           first = false;
-          console.log(castStr);
         });
         
       }
@@ -350,9 +335,7 @@ $("#movie-form").submit(function(event) {
   let keywordsString = getFinalSelections("keywords");
   let castString = getFinalSelections("cast-members");
   let similarTitle = getFinalSelections("title");
-  //get attributes [genres,cast,keywords]
   let arrayOfAttr = getAttributes(similarTitle,genresString, keywordsString,castString);
   $("#no-results").hide();
   $("#results").hide(); 
 });
-

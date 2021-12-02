@@ -1,6 +1,5 @@
 export class MovieFinder {
   static makeMovieCall(stringIDs,keywords,castListIDs){ 
-    console.log(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}&language=en-US&sort_by=popularity.desc&include_video=false&page=1&with_genres=${stringIDs}&with_original_language=en&with_keywords=${keywords}&with_cast=${castListIDs}`)
     return fetch(`https://api.themoviedb.org/3/discover/movie?api_key=${process.env.API_KEY}&language=en-US&sort_by=popularity.desc&include_video=false&page=1&with_genres=${stringIDs}&with_original_language=en&with_keywords=${keywords}&with_cast=${castListIDs}`)
       .then(function(response) {
         if (!response.ok) {
@@ -51,7 +50,7 @@ export class MovieFinder {
       return error;
     });
   }
-  //mw start
+
   static getMovieInfo(title) {
     return fetch(`https://api.themoviedb.org/3/search/movie?api_key=${process.env.API_KEY}&query=${title}`)
     .then(function(response) {
@@ -103,6 +102,4 @@ export class MovieFinder {
       return error;
     });
   }
-  
-  //mw end
 }
