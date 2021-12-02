@@ -23,7 +23,9 @@ function makeButton(div, value, text) {
 
 $("#reset").on("click", () => {
   $("#no-results").hide();
-  $("#keyword-suggestions").slideToggle();
+  if ($("#keyword-suggestions").prop("display") !== 'none') {
+    $("#keyword-suggestions").slideUp();
+  }
   $("#keyword-suggestions").html("");
   sessionStorage.setItem('keywordFirstClick', "true");
   $("#input-keyword").prop("disabled", false);
